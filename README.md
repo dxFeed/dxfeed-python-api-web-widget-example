@@ -24,7 +24,25 @@ pip3 install dash, dxfeed
 
 ### DxFeed code:
 
+#### Connection and Subscription
 
+To start receiving the data the user have to connect to the endpoint and to specify the subscription.
+Here we use the demo endpoint "demo.dxfeed.com:7300". It provides stream data with delay.
+
+Candle is the type of subscription we need for charting. We should provide `date_time` parameter, because Candle
+is a conflated stream.
+
+```python
+import dxfeed as dx
+from datetime import datetime
+
+date_time = datetime.now() - relativedelta(days=5)
+endpoint = dx.Endpoint('demo.dxfeed.com:7300')
+
+candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
+``` 
+
+#### Event Handler
 
 
 ### Dash code:
