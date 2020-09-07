@@ -17,7 +17,7 @@ Web widget from this tutorial may be found on [DxFeed website](dxfeed.com)
 **Install required packages: dash, dxfeed**
 
 ```bash
-pip3 install dash, dxfeed
+pip3 install dash dxfeed
 ```
 
 ## Step 2: Source Code
@@ -44,6 +44,52 @@ candle_subscription = endpoint.create_subscription('Candle', date_time=date_time
 
 #### Event Handler
 
+After receiving an event it should be processed. DxFeed Python API has a 
+[default event handler](https://dxfeed.readthedocs.io/en/latest/basic_usage.html) to work with
+pandas DataFrames.
+
+However, for better performance we used custom event listener. Inherit class from `dxfeed.EventListener` and 
+define the `self.update(events)` method to implement custom process logic. More details: 
+[Custom Event Handler](https://dxfeed.readthedocs.io/en/latest/custom_handler.html)
+
+`utils/handlers.py`:
+```python
+from datetime import datetime
+import dxfeed as dx
+from dxfeed.core.utils.data_class import DequeWithLock
+
+
+class CandleHandler(dx.EventHandler):
+    def __init__(self, n_events):
+        self.aapl_data = {'Open': DequeWithLock(maxlen=n_events),
+                          'High': DequeWithLock(maxlen=n_events),
+                          'Low': DequeWithLock(maxlen=n_events),
+                          'Close': DequeWithLock(maxlen=n_events),
+                          'Time': DequeWithLock(maxlen=n_events),
+                          }
+        self.ibm_data = {'Open': DequeWithLock(maxlen=n_events),
+                          'High': DequeWithLock(maxlen=n_events),
+                          'Low': DequeWithLock(maxlen=n_events),
+                          'Close': DequeWithLock(maxlen=n_events),
+                          'Time': DequeWithLock(maxlen=n_events),
+                         }
+
+    def update(self, events):
+        for event in events:
+            if event.open > 1:
+                if event.symbol.startswith('AAPL'):
+                    self.aapl_data['Open'].append(event.open)
+                    self.aapl_data['High'].append(event.high)
+                    self.aapl_data['Low'].append(event.low)
+                    self.aapl_data['Close'].append(event.close)
+                    self.aapl_data['Time'].append(datetime.fromtimestamp(event.time // 1000))  # Nanoseconds to microseconds
+                if event.symbol.startswith('IBM'):
+                    self.ibm_data['Open'].append(event.open)
+                    self.ibm_data['High'].append(event.high)
+                    self.ibm_data['Low'].append(event.low)
+                    self.ibm_data['Close'].append(event.close)
+                    self.ibm_data['Time'].append(datetime.fromtimestamp(event.time // 1000))
+```
 
 ### Dash code:
 

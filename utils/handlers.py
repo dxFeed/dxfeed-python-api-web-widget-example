@@ -26,7 +26,7 @@ class CandleHandler(dx.EventHandler):
                     self.aapl_data['High'].append(event.high)
                     self.aapl_data['Low'].append(event.low)
                     self.aapl_data['Close'].append(event.close)
-                    self.aapl_data['Time'].append(datetime.fromtimestamp(event.time // 1000))
+                    self.aapl_data['Time'].append(datetime.fromtimestamp(event.time // 1000))  # ns to ms
                 if event.symbol.startswith('IBM'):
                     self.ibm_data['Open'].append(event.open)
                     self.ibm_data['High'].append(event.high)
