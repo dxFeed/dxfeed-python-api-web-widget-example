@@ -1,3 +1,5 @@
-# Header
+# DxFeed Python API Web Widget Example
 
-This is demo for [Python API](https://dxfeed.readthedocs.io/)
+Source code: 
+[github.com/dxFeed/dxfeed-python-api-web-widget-example](https://github.com/dxFeed/dxfeed-python-api-web-widget-example)
+
