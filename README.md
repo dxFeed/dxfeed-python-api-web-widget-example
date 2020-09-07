@@ -5,8 +5,6 @@ Learn how to build live candle charting with this repository.
 Together with [Dash framework](https://dash.plotly.com/) one may build production ready service in about 100 lines of
 code.
 
-Web widget from this tutorial may be found on [DxFeed website](dxfeed.com)
-
 ## Step 1: Prepare the environment
 
 **Optional:** create virtual environment with your favourite tool, e.g.
@@ -98,7 +96,7 @@ After we defined the handler, we should define the data we'd like to process. Fr
 get `AAPL` and `IBM` candles. 
 
 ```python
-candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL{=5m}', 'IBM{=5m}'])
+candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'IBM&Q{=5m}'])
 ``` 
 
 ### Dash code:
@@ -128,11 +126,11 @@ import dxfeed as dx
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-date_time = datetime.now() - relativedelta(days=5)
+date_time = datetime.now() - relativedelta(days=3)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
-candle_handler = CandleHandler(100)
-candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL{=5m}', 'IBM{=5m}'])
+candle_handler = CandleHandler(40)
+candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'IBM&Q{=5m}'])
 ```
 
 #### Set Layout
@@ -197,12 +195,16 @@ def update_candle_graph(n, stocks):
  
  #### Serve app
  
+ Pass configurations for application server
+ 
  ```python
 if __name__ == '__main__':
     app.run_server(debug=False)
 ```
 
 ## Step 3: Run server
+
+Simply run Python script. 
 
 ```bash
 python app.py
