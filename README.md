@@ -91,7 +91,79 @@ class CandleHandler(dx.EventHandler):
                     self.ibm_data['Time'].append(datetime.fromtimestamp(event.time // 1000))
 ```
 
+#### Attach Handler, Add Symbols
+
+Event handler should be associated with subscription. This is done via `set_event_handler` method. 
+After we defined the handler, we should define the data we'd like to process. From code above - we'd like to 
+get `AAPL` and `IBM` candles. 
+
+```python
+candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL{=5m}', 'IBM{=5m}'])
+``` 
+
 ### Dash code:
+
+Dash is a productive Python framework for building web applications. We will go through the code of 
+`app.py` file without deep dive into details. For more information visit [Dash official website](https://plotly.com/)
+
+#### Imports
+
+Import the necessary dash components.
+
+```python
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly.graph_objects as go
+from dash.dependencies import Input, Output
+```
+
+#### DxFeed code
+
+Add DxFeed code from the section above. 
+
+```python
+from utils.handlers import CandleHandler
+import dxfeed as dx
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+date_time = datetime.now() - relativedelta(days=5)
+endpoint = dx.Endpoint('demo.dxfeed.com:7300')
+candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
+candle_handler = CandleHandler(100)
+candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL{=5m}', 'IBM{=5m}'])
+```
+
+#### Set Layout
+
+Here you define what blocks your web page will consist of. 
+* `dcc.Graph` is the block where your plot will be displayed.
+* `dcc.RadioItems` is the block for radio buttons. 
+* `dcc.Interval` is a hidden element for interval graph update.
+
+```python
+app = dash.Dash(__name__)
+app.layout = html.Div([
+    html.Div([
+        dcc.Graph(id='candle-graph'),
+        dcc.RadioItems(
+            id='candle-stocks',
+            options=[
+                {'label': 'AAPL', 'value': 'AAPL'},
+                {'label': 'IBM', 'value': 'IBM'},
+            ],
+            value='AAPL'
+        ),
+        dcc.Interval(
+                id='interval-component',
+                interval=1*1000,  # in milliseconds
+                n_intervals=0
+            ),
+    ])
+])
+```
+ 
 
 ## Step 3: Run server
 
