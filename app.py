@@ -65,7 +65,7 @@ def update_candle_graph(n, stocks):
                                     close=candle_handler.ibm_data['Close'].safe_get(),
                                     name='IBM'))
 
-    return dict(data=plots, layout=go.Layout(title='AAPL & IBM realtime delayed candles',
+    return dict(data=plots, layout=go.Layout(title='AAPL/IBM candles',
                                              showlegend=False,
                                              uirevision=True))
 

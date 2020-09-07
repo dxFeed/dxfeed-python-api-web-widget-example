@@ -163,7 +163,44 @@ app.layout = html.Div([
     ])
 ])
 ```
+
+#### Create callback function
+
+Callbacks make interactivity possible. These functions may be called by user's actions, `dcc.Interval` blocks, etc.
+We use callback to update graph every second and to display chosen with radio button symbol. 
+
+```python
+@app.callback(Output('candle-graph', 'figure'),
+              [Input('interval-component', 'n_intervals'),
+               Input('candle-stocks', 'value')])
+def update_candle_graph(n, stocks):
+    plots = list()  # List with data to display
+    if 'AAPL' in stocks:
+        plots.append(go.Candlestick(x=candle_handler.aapl_data['Time'].safe_get(),
+                                    open=candle_handler.aapl_data['Open'].safe_get(),
+                                    high=candle_handler.aapl_data['High'].safe_get(),
+                                    low=candle_handler.aapl_data['Low'].safe_get(),
+                                    close=candle_handler.aapl_data['Close'].safe_get(),
+                                    name='AAPL'))
+    if 'IBM' in stocks:
+        plots.append(go.Candlestick(x=candle_handler.ibm_data['Time'].safe_get(),
+                                    open=candle_handler.ibm_data['Open'].safe_get(),
+                                    high=candle_handler.ibm_data['High'].safe_get(),
+                                    low=candle_handler.ibm_data['Low'].safe_get(),
+                                    close=candle_handler.ibm_data['Close'].safe_get(),
+                                    name='IBM'))
+
+    return dict(data=plots, layout=go.Layout(title='AAPL/IBM candles',
+                                             showlegend=False,
+                                             uirevision=True))
+```  
  
+ #### Serve app
+ 
+ ```python
+if __name__ == '__main__':
+    app.run_server(debug=False)
+```
 
 ## Step 3: Run server
 
