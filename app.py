@@ -14,11 +14,11 @@ from dash.dependencies import Input, Output
 
 
 # DxFeed init
-date_time = datetime.now() - relativedelta(days=5)
+date_time = datetime.now() - relativedelta(days=3)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
-candle_handler = CandleHandler(100)
+candle_handler = CandleHandler(40)
 candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'IBM&Q{=5m}'])
 
 # Dash app
@@ -29,7 +29,7 @@ app.layout = html.Div([
     html.Div([
         dcc.Interval(
                 id='interval-component',
-                interval=1*1000,  # in milliseconds
+                interval=5*60*1000,  # in milliseconds
                 n_intervals=0
             ),
             dcc.Graph(id='candle-graph'),
