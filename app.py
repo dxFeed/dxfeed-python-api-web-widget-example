@@ -14,12 +14,12 @@ from dash.dependencies import Input, Output
 
 
 # DxFeed init
-date_time = datetime.now() - relativedelta(days=3)
+date_time = datetime.now() - relativedelta(hours=1)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
 candle_handler = CandleHandler(40)
-candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'IBM&Q{=5m}'])
+candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
 
 # Dash app
 app = dash.Dash(__name__)
@@ -37,7 +37,7 @@ app.layout = html.Div([
                 id='candle-stocks',
                 options=[
                     {'label': 'AAPL', 'value': 'AAPL'},
-                    {'label': 'IBM', 'value': 'IBM'},
+                    {'label': 'AMZN', 'value': 'AMZN'},
                 ],
                 value='AAPL'
             )
@@ -57,18 +57,18 @@ def update_candle_graph(n, stocks):
                                     low=candle_handler.aapl_data['Low'].safe_get(),
                                     close=candle_handler.aapl_data['Close'].safe_get(),
                                     name='AAPL'))
-    if 'IBM' in stocks:
-        plots.append(go.Candlestick(x=candle_handler.ibm_data['Time'].safe_get(),
-                                    open=candle_handler.ibm_data['Open'].safe_get(),
-                                    high=candle_handler.ibm_data['High'].safe_get(),
-                                    low=candle_handler.ibm_data['Low'].safe_get(),
-                                    close=candle_handler.ibm_data['Close'].safe_get(),
-                                    name='IBM'))
+    if 'AMZN' in stocks:
+        plots.append(go.Candlestick(x=candle_handler.amzn_data['Time'].safe_get(),
+                                    open=candle_handler.amzn_data['Open'].safe_get(),
+                                    high=candle_handler.amzn_data['High'].safe_get(),
+                                    low=candle_handler.amzn_data['Low'].safe_get(),
+                                    close=candle_handler.amzn_data['Close'].safe_get(),
+                                    name='AMZN'))
 
-    return dict(data=plots, layout=go.Layout(title='AAPL/IBM candles',
+    return dict(data=plots, layout=go.Layout(title='AAPL/AMZN candles',
                                              showlegend=False,
                                              uirevision=True))
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, dev_tools_silence_routes_logging=True)
+    app.run_server(debug=False, dev_tools_silence_routes_logging=True)

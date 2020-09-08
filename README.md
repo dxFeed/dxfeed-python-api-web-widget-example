@@ -65,7 +65,7 @@ class CandleHandler(dx.EventHandler):
                           'Close': DequeWithLock(maxlen=n_events),
                           'Time': DequeWithLock(maxlen=n_events),
                           }
-        self.ibm_data = {'Open': DequeWithLock(maxlen=n_events),
+        self.amzn_data = {'Open': DequeWithLock(maxlen=n_events),
                           'High': DequeWithLock(maxlen=n_events),
                           'Low': DequeWithLock(maxlen=n_events),
                           'Close': DequeWithLock(maxlen=n_events),
@@ -81,22 +81,22 @@ class CandleHandler(dx.EventHandler):
                     self.aapl_data['Low'].append(event.low)
                     self.aapl_data['Close'].append(event.close)
                     self.aapl_data['Time'].append(datetime.fromtimestamp(event.time // 1000))  # Nanoseconds to microseconds
-                if event.symbol.startswith('IBM'):
-                    self.ibm_data['Open'].append(event.open)
-                    self.ibm_data['High'].append(event.high)
-                    self.ibm_data['Low'].append(event.low)
-                    self.ibm_data['Close'].append(event.close)
-                    self.ibm_data['Time'].append(datetime.fromtimestamp(event.time // 1000))
+                if event.symbol.startswith('AMZN'):
+                    self.amzn_data['Open'].append(event.open)
+                    self.amzn_data['High'].append(event.high)
+                    self.amzn_data['Low'].append(event.low)
+                    self.amzn_data['Close'].append(event.close)
+                    self.amzn_data['Time'].append(datetime.fromtimestamp(event.time // 1000))
 ```
 
 #### Attach Handler, Add Symbols
 
 Event handler should be associated with subscription. This is done via `set_event_handler` method. 
 After we defined the handler, we should define the data we'd like to process. From code above - we'd like to 
-get `AAPL` and `IBM` candles. 
+get `AAPL` and `AMZN` candles. 
 
 ```python
-candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'IBM&Q{=5m}'])
+candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
 ``` 
 
 ### Dash code:
@@ -130,7 +130,7 @@ date_time = datetime.now() - relativedelta(days=3)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
 candle_handler = CandleHandler(40)
-candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'IBM&Q{=5m}'])
+candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
 ```
 
 #### Set Layout
@@ -149,7 +149,7 @@ app.layout = html.Div([
             id='candle-stocks',
             options=[
                 {'label': 'AAPL', 'value': 'AAPL'},
-                {'label': 'IBM', 'value': 'IBM'},
+                {'label': 'AMZN', 'value': 'AMZN'},
             ],
             value='AAPL'
         ),
@@ -180,15 +180,15 @@ def update_candle_graph(n, stocks):
                                     low=candle_handler.aapl_data['Low'].safe_get(),
                                     close=candle_handler.aapl_data['Close'].safe_get(),
                                     name='AAPL'))
-    if 'IBM' in stocks:
-        plots.append(go.Candlestick(x=candle_handler.ibm_data['Time'].safe_get(),
-                                    open=candle_handler.ibm_data['Open'].safe_get(),
-                                    high=candle_handler.ibm_data['High'].safe_get(),
-                                    low=candle_handler.ibm_data['Low'].safe_get(),
-                                    close=candle_handler.ibm_data['Close'].safe_get(),
-                                    name='IBM'))
+    if 'AMZN' in stocks:
+        plots.append(go.Candlestick(x=candle_handler.amzn_data['Time'].safe_get(),
+                                    open=candle_handler.amzn_data['Open'].safe_get(),
+                                    high=candle_handler.amzn_data['High'].safe_get(),
+                                    low=candle_handler.amzn_data['Low'].safe_get(),
+                                    close=candle_handler.amzn_data['Close'].safe_get(),
+                                    name='AMZN'))
 
-    return dict(data=plots, layout=go.Layout(title='AAPL/IBM candles',
+    return dict(data=plots, layout=go.Layout(title='AAPL/AMZN candles',
                                              showlegend=False,
                                              uirevision=True))
 ```  
