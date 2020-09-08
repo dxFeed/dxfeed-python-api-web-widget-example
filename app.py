@@ -24,7 +24,7 @@ candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}'
 # Dash app
 app = dash.Dash(__name__)
 app.layout = html.Div([
-    html.Link(rel='stylesheet', href='/static/stylesheet.css'),
+    html.Link(rel='stylesheet', href='/assets/stylesheet.css'),
     dcc.Markdown(TEXTS.get('header')),
     html.Div([
         dcc.Interval(
