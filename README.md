@@ -57,6 +57,11 @@ It happens when the events have next timestamp.
 
 `utils/handlers.py`:
 ```python
+from datetime import datetime
+import dxfeed as dx
+from dxfeed.core.utils.data_class import DequeWithLock
+
+
 class CandleHandler(dx.EventHandler):
     def __init__(self, n_events):
         self.aapl_data = {'Open': DequeWithLock(maxlen=n_events),
