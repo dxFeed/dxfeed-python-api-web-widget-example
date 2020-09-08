@@ -34,7 +34,7 @@ is a conflated stream.
 import dxfeed as dx
 from datetime import datetime
 
-date_time = datetime.now() - relativedelta(days=5)
+date_time = datetime.now() - relativedelta(hours=1)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
