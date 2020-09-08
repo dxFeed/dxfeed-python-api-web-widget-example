@@ -13,7 +13,7 @@ import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 
 
-# DxFeed init
+# dxFeed init
 date_time = datetime.now() - relativedelta(hours=1)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 

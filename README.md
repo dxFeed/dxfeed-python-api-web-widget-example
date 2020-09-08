@@ -1,7 +1,7 @@
-# HOW TO: Run Live Charting With DxFeed Python API in 100 Lines of Code via DASH
+# HOW TO: Run Live Charting With dxFeed Python API in 100 Lines of Code via DASH
 
 Learn how to build live candle charting with this repository. 
-[DxFeed Python API](https://dxfeed.readthedocs.io/en/latest/) offers an easy way to get stream financial data.
+[dxFeed Python API](https://dxfeed.readthedocs.io/en/latest/) offers an easy way to get stream financial data.
 Together with [Dash framework](https://dash.plotly.com/) one may build production ready service in about 100 lines of
 code.
 
@@ -20,7 +20,7 @@ pip3 install dash dxfeed
 
 ## Step 2: Source Code
 
-### DxFeed code:
+### dxFeed code:
 
 #### Connection and Subscription
 
@@ -42,7 +42,7 @@ candle_subscription = endpoint.create_subscription('Candle', date_time=date_time
 
 #### Event Handler
 
-After receiving an event it should be processed. DxFeed Python API has a 
+After receiving an event it should be processed. dxFeed Python API has a 
 [default event handler](https://dxfeed.readthedocs.io/en/latest/basic_usage.html) to work with
 pandas DataFrames.
 
@@ -116,9 +116,9 @@ import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 ```
 
-#### DxFeed code
+#### dxFeed code
 
-Add DxFeed code from the section above. 
+Add dxFeed code from the section above. 
 
 ```python
 from utils.handlers import CandleHandler
