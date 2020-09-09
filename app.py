@@ -1,9 +1,9 @@
 from texts import TEXTS
+from pathlib import Path
 from utils.handlers import CandleHandler
 import dxfeed as dx
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-
 
 # Dash imports
 import dash
@@ -22,10 +22,13 @@ candle_handler = CandleHandler(40)
 candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
 
 # Dash app
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, title='dxFeed Candle Charting')
 app.layout = html.Div([
     html.Link(rel='stylesheet', href='/assets/stylesheet.css'),
-    dcc.Markdown(TEXTS.get('header')),
+    html.Div([html.Img(src='assets/dxfeed_logo.png', id='logo'),
+              html.Span('Python API Web Widget Example', id='app-title')],
+             className="header"),
+    dcc.Markdown(TEXTS.get('header'), className='md-text', dangerously_allow_html=True),
     html.Div([
         dcc.Interval(
                 id='interval-component',
@@ -67,7 +70,9 @@ def update_candle_graph(n, stocks):
 
     return dict(data=plots, layout=go.Layout(title='AAPL/AMZN candles',
                                              showlegend=False,
-                                             uirevision=True))
+                                             uirevision=True,
+                                             font=dict(family="Open Sans, serif", size=18,)
+                                             ))
 
 
 if __name__ == '__main__':

@@ -1,1 +1,38 @@
-H1 { text-align: center }
+
+body {
+    font-family: 'Open Sans', serif;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-bottom: 5%;
+    /*color: #53565A;*/
+    font-size: 1.2em;
+}
+
+#logo {
+    width: 200px;
+}
+
+#app-title{
+    font-size: 135%;
+    font-weight: bold;
+    /*text-align: center;*/
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.md-text {*/
+/*    font-size: 1.5vw;*/
+/*}*/
+
+/*#candle-graph {*/
+/*    height: 50vh;*/
+/*}*/
+
+#candle-stocks {
+    display: flex;
+    justify-content: center;
+}
