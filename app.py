@@ -68,7 +68,7 @@ def update_candle_graph(n, stocks):
                                     close=candle_handler.amzn_data['Close'].safe_get(),
                                     name='AMZN'))
 
-    return dict(data=plots, layout=go.Layout(title='AAPL/AMZN candles',
+    return dict(data=plots, layout=go.Layout(title='AAPL/AMZN 5 minute Candles (30 minutes delay from realtime)',
                                              showlegend=False,
                                              uirevision=True,
                                              font=dict(family="Open Sans, serif", size=18,)
