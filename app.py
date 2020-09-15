@@ -2,6 +2,7 @@ from texts import TEXTS
 from pathlib import Path
 from utils.handlers import CandleHandler
 import dxfeed as dx
+from dxfeed.core.DXFeedPy import dxf_initialize_logger
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -15,6 +16,7 @@ from dash.dependencies import Input, Output
 
 # dxFeed init
 date_time = datetime.now() - relativedelta(hours=1)
+dxf_initialize_logger(f'logs/dx_logs_{datetime.now().strftime("%Y%m%d_%H%M")}.log', True, True, True)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
