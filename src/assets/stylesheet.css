@@ -1,0 +1,170 @@
+:root {
+ --orange: #e6411d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: normal;
+    src:
+            url('./fonts/OpenSans-Regular.woff2') format('woff2'),
+            url('./fonts/OpenSans-Regular.woff') format('woff'),
+            url('./fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    src:
+            url('./fonts/OpenSans-SemiBold.woff2') format('woff2'),
+            url('./fonts/OpenSans-SemiBold.woff') format('woff'),
+            url('./fonts/OpenSans-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: bold;
+    src:
+            url('./fonts/OpenSans-Bold.woff2') format('woff2'),
+            url('./fonts/OpenSans-Bold.woff') format('woff'),
+            url('./fonts/OpenSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: 300;
+    src:
+            url('./fonts/OpenSans-Light.woff2') format('woff2'),
+            url('./fonts/OpenSans-Light.woff') format('woff'),
+            url('./fonts/OpenSans-Light.ttf') format('truetype');
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    padding-bottom: 20px;
+}
+
+html.wf-active body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+@media screen and (min-width: 768px) {
+    h1 {
+        font-size: 32px;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: var(--orange);
+}
+
+p {
+    margin: 1rem 0;
+}
+
+.container {
+    margin: 0 auto;
+    width: auto;
+    padding: 0 15px;
+    max-width: 1120px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header {
+    padding-top: 16px;
+    margin-bottom: 30px;
+}
+
+@media screen and (min-width: 768px) {
+    .header {
+        margin-bottom: 60px;
+    }
+}
+
+.headerLogo {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.logoImage {
+    width: 126px;
+    margin-right: 16px;
+    line-height: 0;
+}
+
+.logoText {
+    display: none;
+    position: relative;
+    font-size: 18px;
+    color: #313133;
+    font-weight: bold;
+}
+
+@media screen and (min-width: 374px) {
+    .logoText {
+        display: block;
+    }
+}
+
+.logoText::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 2px;
+    height: 100%;
+    background: var(--orange);
+}
+
+.graphHolder {
+    overflow-x: auto;
+}
+
+.graphHolder svg {
+    width: 100%!important;
+}
+
+.graphDisclaimer {
+    font-style: italic;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.graphLegend {
+    display: flex;
+    justify-content: center;
+}
+
+.labelButtons {
+    display: flex;
+    margin: auto;
+}
+
+.labelButtons label {
+    margin-right: 20px;
+}
+
+.labelButtons input {
+    margin-right: 6px;
+}

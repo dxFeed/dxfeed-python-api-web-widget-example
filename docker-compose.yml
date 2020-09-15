@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  python:
+    container_name: python
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8050"
+    volumes:
+      - ./src:/usr/src/app
