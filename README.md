@@ -1,16 +1,17 @@
-# HOW TO: Run Live Charting With dxFeed Python API in 100 Lines of Code via DASH
+# HOW-TO: Run Live Charting With dxFeed Python API in 100 Lines of Code via DASH
 
-Learn how to build live candle charting with this repository. 
-[dxFeed Python API](https://dxfeed.readthedocs.io/en/latest/) offers an easy way to get stream financial data.
-Together with [Dash framework](https://dash.plotly.com/) one may build production ready service in about 100 lines of
-code.
+[dxFeed Python API](https://dxfeed.readthedocs.io/en/latest/) offers an easy way to receive streaming financial data.
+Combined with  [Dash framework](https://dash.plotly.com/), it allows building production-ready service with about 100
+lines of code. Learn how to build live charting with this repository.
 
 ## Step 1: Prepare the environment
 
-**Optional:** create virtual environment with your favourite tool, e.g.
+**Optional: create virtual environment**
+
+ In order to facilitate further work, we recommend creating virtual environment with the tool of your choice: 
  [Pipenv](https://pipenv-fork.readthedocs.io/en/latest/), [Poetry](https://python-poetry.org/docs/),
  [Conda Env](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), etc.
- This will help you in following maintenance.
+
  
 **Install required packages: dash, dxfeed**
 
@@ -22,14 +23,12 @@ pip3 install dash dxfeed
 
 ### dxFeed code:
 
-#### Connection and Subscription
+#### Connect and Subscribe
 
-To start receiving the data the user have to connect to the endpoint and to specify the subscription.
-Here we use the demo endpoint "demo.dxfeed.com:7300". It provides stream data with delay.
-
-Candle is the type of subscription we need for charting. We should provide `date_time` parameter, because Candle
-is a conflated stream.
-
+To start receiving the data:
+ 1. Connect to the endpoint and specify the subscription. Use the demo endpoint provided by the dxFeed team.
+ 2. Use the Candle event type for charting. Specify the date_time parameter to manage aggregated data.
+ 
 ```python
 import dxfeed as dx
 from datetime import datetime
@@ -40,20 +39,21 @@ endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
 ``` 
 
-#### Event Handler
+#### Implement Event Handler
 
-After receiving an event it should be processed. dxFeed Python API has a 
-[default event handler](https://dxfeed.readthedocs.io/en/latest/basic_usage.html) to work with
-pandas DataFrames.
+Process all received events. 
 
-However, for better performance we used custom event listener. Inherit class from `dxfeed.EventListener` and 
-define the `self.update(events)` method to implement custom process logic. More details: 
-[Custom Event Handler](https://dxfeed.readthedocs.io/en/latest/custom_handler.html)
+dxFeed Python API has a [default event handler](https://dxfeed.readthedocs.io/en/latest/basic_usage.html) to work with
+pandas DataFrames. To process data required for this task only, let’s implement a custom event listener. 
+For this:
+ 1.	Inherit a class from `dxfeed.EventListener`
+ 2.	Define the self.update(events) method to implement custom process logic. For more details on creating
+  a custom event handler, see [our documentation](https://dxfeed.readthedocs.io/en/latest/custom_handler.html)
 
-Note: we use `self.aapl_buffer` and `self.amzn_buffer` to store previous events. Last candle is updated
-with new data coming. This is how stream subscription is implemented. CandleHandler appends 
-candle to `self.aapl_data` or `self.amzn_data` only when there are no updates to the candle.
-It happens when the events have next timestamp.
+Note: here we use `self.aapl_buffer` and `self.amzn_buffer` to store previous events. As the subscription is streaming,
+the last candle is updated with incoming data with the same timestamp until events with the next timestamp arrive. 
+CandleHandler appends a candle to `self.aapl_data` or `self.amzn_data` only when there are no more updates to the 
+current candle. 
 
 `utils/handlers.py`:
 ```python
@@ -105,9 +105,8 @@ class CandleHandler(dx.EventHandler):
 
 #### Attach Handler, Add Symbols
 
-Event handler should be associated with subscription. This is done via `set_event_handler` method. 
-After we defined the handler, we should define the data we'd like to process. From code above - we'd like to 
-get `AAPL` and `AMZN` candles. 
+Associate the event handler with a subscription using the set_event_handler method and define the data you would like 
+to process. We get AAPL and AMZN candles in this example.
 
 ```python
 candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
@@ -115,10 +114,10 @@ candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}'
 
 ### Dash code:
 
-Dash is a productive Python framework for building web applications. We will go through the code of 
-`app.py` file without deep dive into details. For more information visit [Dash official website](https://plotly.com/)
+Dash is an efficient Python framework aimed at building web applications. We will use the app.py file without diving 
+deep into specifics. For detailed information, visit the [Dash official website](https://plotly.com/)
 
-#### Imports
+#### Import components
 
 Import the necessary dash components.
 
@@ -130,9 +129,9 @@ import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 ```
 
-#### dxFeed code
+#### Add dxFeed code
 
-Add dxFeed code from the section above. 
+Add dxFeed code from the dxFeed section. 
 
 ```python
 from utils.handlers import CandleHandler
@@ -149,10 +148,11 @@ candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}'
 
 #### Set Layout
 
-Here you define what blocks your web page will consist of. 
-* `dcc.Graph` is the block where your plot will be displayed.
-* `dcc.RadioItems` is the block for radio buttons. 
-* `dcc.Interval` is a hidden element for interval graph update.
+Define the content of your page.
+ 
+* `dcc.Graph` is the block where chart will be displayed
+* `dcc.RadioItems` is the block for radio buttons 
+* `dcc.Interval` is a hidden element for an [interval](https://dash.plotly.com/dash-core-components/interval) graph update
 
 ```python
 app = dash.Dash(__name__)
@@ -169,7 +169,7 @@ app.layout = html.Div([
         ),
         dcc.Interval(
                 id='interval-component',
-                interval=1*1000,  # in milliseconds
+                interval=1*60*1000,  # in milliseconds
                 n_intervals=0
             ),
     ])
@@ -178,8 +178,11 @@ app.layout = html.Div([
 
 #### Create callback function
 
-Callbacks make interactivity possible. These functions may be called by user's actions, `dcc.Interval` blocks, etc.
-We use callback to update graph every second and to display chosen with radio button symbol. 
+Callbacks make interactivity possible. These functions may be called by user's actions such as `dcc.Interval` blocks, 
+etc. 
+
+Use a callback to update the graph every minute and to display exactly the instrument that is selected with the radio 
+button.
 
 ```python
 @app.callback(Output('candle-graph', 'figure'),
@@ -207,9 +210,10 @@ def update_candle_graph(n, stocks):
                                              uirevision=True))
 ```  
  
- #### Serve app
+ #### Configure server app
  
- Pass configurations for application server
+Pass configuration as run_server function arguments. For details, see 
+[Dash documentation](https://dash.plotly.com/devtools).
  
  ```python
 if __name__ == '__main__':
@@ -218,7 +222,7 @@ if __name__ == '__main__':
 
 ## Step 3: Run server
 
-Simply run Python script. 
+Run the Python script. Enjoy the charting.
 
 ```bash
 python app.py
