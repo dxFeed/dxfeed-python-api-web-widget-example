@@ -28,7 +28,7 @@ app = dash.Dash(__name__, title='dxFeed Candle Charting')
 app.layout = html.Div([
     html.Link(rel='stylesheet', href='/assets/stylesheet.css'),
     html.Div([html.Img(src='assets/dxfeed_logo.png', id='logo'),
-              html.Span('Python API Web Widget Example', id='app-title')],
+              html.Span('PYTHON API', id='app-title')],
              className="header"),
     dcc.Markdown(TEXTS.get('header'), className='md-text', dangerously_allow_html=True),
     html.Div([
@@ -38,6 +38,7 @@ app.layout = html.Div([
                 n_intervals=0
             ),
             dcc.Graph(id='candle-graph'),
+            html.Div('Data is received directly from Nasdaq and delayed by 30 minutes.', className='graphDisclaimer'),
             dcc.RadioItems(
                 id='candle-stocks',
                 options=[
