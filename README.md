@@ -47,7 +47,7 @@ dxFeed Python API has a [default event handler](https://dxfeed.readthedocs.io/en
 pandas DataFrames. To process data required for this task only, let’s implement a custom event listener. 
 For this:
  1.	Inherit a class from `dxfeed.EventListener`
- 2.	Define the self.update(events) method to implement custom process logic. For more details on creating
+ 2.	Define the `self.update(events)` method to implement custom process logic. For more details on creating
   a custom event handler, see [our documentation](https://dxfeed.readthedocs.io/en/latest/custom_handler.html)
 
 Note: here we use `self.aapl_buffer` and `self.amzn_buffer` to store previous events. As the subscription is streaming,
@@ -106,7 +106,7 @@ class CandleHandler(dx.EventHandler):
 #### Attach Handler, Add Symbols
 
 Associate the event handler with a subscription using the set_event_handler method and define the data you would like 
-to process. We get AAPL and AMZN candles in this example.
+to process. We get `AAPL` and `AMZN` candles in this example.
 
 ```python
 candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
@@ -114,8 +114,8 @@ candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}'
 
 ### Dash code:
 
-Dash is an efficient Python framework aimed at building web applications. We will use the app.py file without diving 
-deep into specifics. For detailed information, visit the [Dash official website](https://plotly.com/)
+Dash is an efficient Python framework aimed at building web applications. We will go through the app.py file without 
+diving deep into specifics. For detailed information, visit the [Dash official website](https://plotly.com/)
 
 #### Import components
 
