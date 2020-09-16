@@ -137,14 +137,6 @@ p {
     background: var(--orange);
 }
 
-.graphHolder {
-    overflow-x: auto;
-}
-
-.graphHolder svg {
-    width: 100%!important;
-}
-
 .graphDisclaimer {
     font-style: italic;
     font-size: 14px;
