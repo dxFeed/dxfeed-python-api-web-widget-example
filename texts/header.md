@@ -1,10 +1,11 @@
-# dxFeed Python API Web Widget Example
+# dxFeed Python API Web Widget Demo
 
-Implementation details and source code: 
-[github.com/dxFeed/dxfeed-python-api-web-widget-example](https://github.com/dxFeed/dxfeed-python-api-web-widget-example)
+dxFeed provides real-time and historical aggregated market data via Python API. We support multiple custom
+ aggregations including bid/ask, Renko, price levels, volume aggregations.
+ 
+This web widget is built using dxFeed Python API library and Dash framework and shows 5 minute candle chart. It
+ takes just a hundred lines of code to build production-ready service.
+ 
+Check the [implementation details and source code](https://github.com/dxFeed/dxfeed-python-api-web-widget-example).
 
-This web charting service is build with dxFeed Python API library and Dash framework. It plots
-plots 5 minute candles with 30 minutes delay from realtime.
-
-It takes about a hundred lines of code to build production ready service. Follow the link above to 
-see the details. 
+[Contact us](https://www.dxfeed.com/contact-us/) to learn more.
