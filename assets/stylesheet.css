@@ -1,38 +1,162 @@
+:root {
+ --orange: #e6411d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: normal;
+    src:
+            url('./fonts/OpenSans-Regular.woff2') format('woff2'),
+            url('./fonts/OpenSans-Regular.woff') format('woff'),
+            url('./fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    src:
+            url('./fonts/OpenSans-SemiBold.woff2') format('woff2'),
+            url('./fonts/OpenSans-SemiBold.woff') format('woff'),
+            url('./fonts/OpenSans-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: bold;
+    src:
+            url('./fonts/OpenSans-Bold.woff2') format('woff2'),
+            url('./fonts/OpenSans-Bold.woff') format('woff'),
+            url('./fonts/OpenSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-weight: 300;
+    src:
+            url('./fonts/OpenSans-Light.woff2') format('woff2'),
+            url('./fonts/OpenSans-Light.woff') format('woff'),
+            url('./fonts/OpenSans-Light.ttf') format('truetype');
+}
 
 body {
-    font-family: 'Open Sans', serif;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-    margin-bottom: 5%;
-    /*color: #53565A;*/
-    font-size: 1.2em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    padding-bottom: 20px;
 }
 
-#logo {
-    width: 200px;
+html.wf-active body {
+    font-family: 'Open Sans', sans-serif;
 }
 
-#app-title{
-    font-size: 135%;
-    font-weight: bold;
-    /*text-align: center;*/
+h1 {
+    font-size: 24px;
+}
+
+@media screen and (min-width: 768px) {
+    h1 {
+        font-size: 32px;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: var(--orange);
+}
+
+p {
+    margin: 1rem 0;
+}
+
+.container {
+    margin: 0 auto;
+    width: auto;
+    padding: 0 15px;
+    max-width: 1120px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .header {
+    padding-top: 16px;
+    margin-bottom: 30px;
+}
+
+@media screen and (min-width: 768px) {
+    .header {
+        margin-bottom: 60px;
+    }
+}
+
+.headerLogo {
     display: flex;
-    justify-content: center;
+    flex-wrap: nowrap;
     align-items: center;
 }
 
-/*.md-text {*/
-/*    font-size: 1.5vw;*/
-/*}*/
+.logoImage {
+    width: 126px;
+    margin-right: 16px;
+    line-height: 0;
+}
 
-/*#candle-graph {*/
-/*    height: 50vh;*/
-/*}*/
+.logoText {
+    display: none;
+    position: relative;
+    font-size: 18px;
+    color: #313133;
+    font-weight: bold;
+}
 
-#candle-stocks {
+@media screen and (min-width: 374px) {
+    .logoText {
+        display: block;
+    }
+}
+
+.logoText::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 2px;
+    height: 100%;
+    background: var(--orange);
+}
+
+.graphDisclaimer {
+    font-style: italic;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.graphLegend {
     display: flex;
     justify-content: center;
+}
+
+.labelButtons {
+    display: flex;
+    margin: auto;
+}
+
+.labelButtons label {
+    margin-right: 20px;
+}
+
+.labelButtons input {
+    margin-right: 6px;
 }

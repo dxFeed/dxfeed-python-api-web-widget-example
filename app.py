@@ -23,31 +23,54 @@ candle_subscription = endpoint.create_subscription('Candle', date_time=date_time
 candle_handler = CandleHandler(40)
 candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
 
+# external JavaScript files
+external_scripts = [
+    'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
+]
+
 # Dash app
-app = dash.Dash(__name__, title='dxFeed Candle Charting')
+app = dash.Dash(__name__, title='dxFeed Candle Charting', external_scripts=external_scripts,
+meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
+
 app.layout = html.Div([
-    html.Link(rel='stylesheet', href='/assets/stylesheet.css'),
-    html.Div([html.Img(src='assets/dxfeed_logo.png', id='logo'),
-              html.Span('PYTHON API', id='app-title')],
-             className="header"),
-    dcc.Markdown(TEXTS.get('header'), className='md-text', dangerously_allow_html=True),
+    # Header Start
     html.Div([
-        dcc.Interval(
-                id='interval-component',
-                interval=5*60*1000,  # in milliseconds
-                n_intervals=0
-            ),
-            dcc.Graph(id='candle-graph'),
-            html.Div('Data is received directly from Nasdaq and delayed by 30 minutes.', className='graphDisclaimer'),
-            dcc.RadioItems(
-                id='candle-stocks',
-                options=[
-                    {'label': 'AAPL', 'value': 'AAPL'},
-                    {'label': 'AMZN', 'value': 'AMZN'},
-                ],
-                value='AAPL'
-            )
-    ])
+        html.Div([
+            html.Div([
+                html.Div([
+                    html.Img(src='assets/images/logo-dxfeed-original.svg', className='logoImage'),
+                    html.Span('PYTHON API', className='logoText')
+                ], className='headerLogo'),
+            ], className='row headerRow'),
+        ], className='container')
+    ], className='header'),
+    # Header End
+    html.Div([
+        html.Div([
+            dcc.Markdown(TEXTS.get('header'), className='mainInfo', dangerously_allow_html=True),
+            html.Div([
+                dcc.Interval(
+                        id='interval-component',
+                        interval=5*60*1000,  # in milliseconds
+                        n_intervals=0
+                    ),
+                    dcc.Graph(id='candle-graph', className='graphHolder'),
+                    html.Div('Data is received directly from Nasdaq and delayed by 30 minutes.',
+                    className='graphDisclaimer'),
+                    html.Div([
+                        dcc.RadioItems(
+                            id='candle-stocks',
+                            className='labelButtons',
+                            options=[
+                                {'label': 'AAPL', 'value': 'AAPL'},
+                                {'label': 'AMZN', 'value': 'AMZN'},
+                            ],
+                            value='AAPL'
+                        )
+                    ], className='graphLegend')
+            ])
+        ], className='container')
+    ], className='mainContent'),
 ])
 
 
@@ -71,10 +94,10 @@ def update_candle_graph(n, stocks):
                                     close=candle_handler.amzn_data['Close'].safe_get(),
                                     name='AMZN'))
 
-    return dict(data=plots, layout=go.Layout(title='AAPL/AMZN 5 minute Candles (30 minutes delay from realtime)',
+    return dict(data=plots, layout=go.Layout(title='AAPL/AMZN 5 minute candles',
                                              showlegend=False,
                                              uirevision=True,
-                                             font=dict(family="Open Sans, serif", size=18,)
+                                             font=dict(family="Open Sans, sans-serif", size=16,)
                                              ))
 
 
