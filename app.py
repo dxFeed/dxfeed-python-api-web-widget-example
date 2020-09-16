@@ -52,7 +52,7 @@ app.layout = html.Div([
                         interval=5*60*1000,  # in milliseconds
                         n_intervals=0
                     ),
-                    dcc.Graph(id='candle-graph', className='graphHolder', responsive=True, config={'responsive': True}),
+                    dcc.Graph(id='candle-graph', className='graphHolder'),
                     html.Div('Data is received directly from Nasdaq and delayed by 30 minutes.',
                     className='graphDisclaimer'),
                     html.Div([
@@ -95,8 +95,7 @@ def update_candle_graph(n, stocks):
     return dict(data=plots, layout=go.Layout(title='AAPL/AMZN 5 minute candles',
                                              showlegend=False,
                                              uirevision=True,
-                                             font=dict(family="Open Sans, sans-serif", size=16,),
-                                             autosize=True,
+                                             font=dict(family="Open Sans, sans-serif", size=16,)
                                              ))
 
 
