@@ -210,7 +210,7 @@ def update_candle_graph(n, stocks):
                                              uirevision=True))
 ```  
  
- #### Configure server app
+#### Configure server app
  
 Pass configuration as run_server function arguments. For details, see 
 [Dash documentation](https://dash.plotly.com/devtools).
