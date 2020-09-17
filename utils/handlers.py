@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import dxfeed as dx
 from dxfeed.core.utils.data_class import DequeWithLock
 
@@ -28,7 +28,8 @@ class CandleHandler(dx.EventHandler):
                     self.aapl_data['High'].append(self.aapl_buffer.high)
                     self.aapl_data['Low'].append(self.aapl_buffer.low)
                     self.aapl_data['Close'].append(self.aapl_buffer.close)
-                    self.aapl_data['Time'].append(datetime.fromtimestamp(self.aapl_buffer.time // 1000))  # ns to ms
+                    self.aapl_data['Time'].append(datetime.utcfromtimestamp(self.aapl_buffer.time // 1000)  # ns to ms
+                                                  .replace(tzinfo=timezone.utc))
                     self.aapl_buffer = event
                 else:
                     self.aapl_buffer = event
@@ -38,7 +39,8 @@ class CandleHandler(dx.EventHandler):
                     self.amzn_data['High'].append(self.amzn_buffer.high)
                     self.amzn_data['Low'].append(self.amzn_buffer.low)
                     self.amzn_data['Close'].append(self.amzn_buffer.close)
-                    self.amzn_data['Time'].append(datetime.fromtimestamp(self.amzn_buffer.time // 1000))
+                    self.amzn_data['Time'].append(datetime.utcfromtimestamp(self.amzn_buffer.time // 1000)
+                                                  .replace(tzinfo=timezone.utc))
                     self.amzn_buffer = event
                 else:
                     self.amzn_buffer = event
