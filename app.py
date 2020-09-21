@@ -105,7 +105,7 @@ def update_candle_graph(n, stocks):
                                              xaxis=dict(title='Time (America/New_York timezone)',
                                                         rangebreaks=[
                                                             dict(bounds=["sat", "mon"]),  # hide weekends
-                                                            dict(pattern='hour', bounds=[17.5, 8.5])
+                                                            dict(pattern='hour', bounds=[18, 8.5])
                                                         ])
                                              ))
 
