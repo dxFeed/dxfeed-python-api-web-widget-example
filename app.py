@@ -4,6 +4,7 @@ from utils.handlers import CandleHandler
 import dxfeed as dx
 from dxfeed.core.DXFeedPy import dxf_initialize_logger
 from datetime import datetime
+import pytz
 from dateutil.relativedelta import relativedelta
 
 # Dash imports
@@ -15,12 +16,12 @@ from dash.dependencies import Input, Output
 
 
 # dxFeed init
-date_time = datetime.now() - relativedelta(hours=1)
+date_time = datetime.now() - relativedelta(hours=2)
 dxf_initialize_logger(f'logs/dx_logs_{datetime.now().strftime("%Y%m%d_%H%M")}.log', True, True, True)
 endpoint = dx.Endpoint('demo.dxfeed.com:7300')
 
 candle_subscription = endpoint.create_subscription('Candle', date_time=date_time)
-candle_handler = CandleHandler(40)
+candle_handler = CandleHandler(100)
 candle_subscription.set_event_handler(candle_handler).add_symbols(['AAPL&Q{=5m}', 'AMZN&Q{=5m}'])
 
 # external JavaScript files
@@ -80,14 +81,17 @@ app.layout = html.Div([
 def update_candle_graph(n, stocks):
     plots = list()  # List with data to display
     if 'AAPL' in stocks:
-        plots.append(go.Candlestick(x=candle_handler.aapl_data['Time'].safe_get(),
+        # NASDAQ follows the America/New_York timezone
+        plots.append(go.Candlestick(x=[time.astimezone(tz=pytz.timezone('America/New_York'))
+                                       for time in candle_handler.aapl_data['Time'].safe_get()],
                                     open=candle_handler.aapl_data['Open'].safe_get(),
                                     high=candle_handler.aapl_data['High'].safe_get(),
                                     low=candle_handler.aapl_data['Low'].safe_get(),
                                     close=candle_handler.aapl_data['Close'].safe_get(),
                                     name='AAPL'))
     if 'AMZN' in stocks:
-        plots.append(go.Candlestick(x=candle_handler.amzn_data['Time'].safe_get(),
+        plots.append(go.Candlestick(x=[time.astimezone(tz=pytz.timezone('America/New_York'))
+                                       for time in candle_handler.amzn_data['Time'].safe_get()],
                                     open=candle_handler.amzn_data['Open'].safe_get(),
                                     high=candle_handler.amzn_data['High'].safe_get(),
                                     low=candle_handler.amzn_data['Low'].safe_get(),
@@ -97,7 +101,12 @@ def update_candle_graph(n, stocks):
     return dict(data=plots, layout=go.Layout(title='AAPL/AMZN 5 minute candles',
                                              showlegend=False,
                                              uirevision=True,
-                                             font=dict(family="Open Sans, sans-serif", size=16,)
+                                             font=dict(family="Open Sans, sans-serif", size=16,),
+                                             xaxis=dict(title='Time (America/New_York timezone)',
+                                                        rangebreaks=[
+                                                            dict(bounds=["sat", "mon"]),  # hide weekends
+                                                            dict(pattern='hour', bounds=[18, 8.5])
+                                                        ])
                                              ))
 
 
